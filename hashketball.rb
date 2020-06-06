@@ -110,6 +110,7 @@ def game_hash
           steals: 1,
           blocks: 1,
           slam_dunks: 0
+      
         },
         {
           player_name: "Kemba Walker",
@@ -128,10 +129,10 @@ def game_hash
 end
 
 def num_points_scored(player_name)
-  game_hash.each do |key, value|
-    value[:players].each do |key1|
-      if key1[:player_name] == player_name
-      return key1[:points]
+  game_hash.each do |home_team, home_team_info|
+    home_team_info[:players].each do |player_info|
+      if player_info[:player_name] == player_name
+      return player_info[:points]
       end
     end
   end
@@ -166,7 +167,7 @@ def player_numbers(team_name)
   game_hash.each do |home_team, home_team_info|
     if home_team_info[:team_name] == team_name
       home_team_info.each do |key, value|
-        if key == :players
+        if :players == key
           value.each do |player_info|
             final_array << player_info[:number]
             end
@@ -178,13 +179,15 @@ def player_numbers(team_name)
   end
 
 def player_stats(name)
-game_hash.each do |key, value|
-value[:players].each do |player_name|
-    if name == player_name[:player_name]
-      return player_name
-  end
-  end
-  end
+  hash = nil
+  game_hash.each do |key, value| # value => game
+    value[:players].each do |player_name| # player_name => {}
+      if name == player_name[:player_name]
+        hash = player_name
+      end
+    end
+  end 
+  hash 
 end
 
 def big_shoe_rebounds
